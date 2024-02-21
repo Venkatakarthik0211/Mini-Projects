@@ -1,0 +1,41 @@
+Jenkins:
+$$$ How to create a github organization using jenkins
+
+
+# For better usage, use docker for running jenkins
+sudo docker run -p 8080:8080 -p 50000:50000 -d -v  /home/user/jenkins jenkins/jenkins:lts
+
+#How to create a webhook using slack? 
+
+1) Go to workspace settings -> Apps -> More Apps(Manage Apps)
+It will redirect to the slack desktop
+Build -> Drop down(Create a new app) -> Select a workspace -> Go to incoming webhooks
+Select a channel -> Add a new Webhook -> Copy the Generated URL From the page.
+
+# Create a Github App
+
+Go to settings -> Developer Settings -> Github Apps -> Create a Github App
+Give a suited name -> Use the webhook URL while creating a app for Github Organizations
+Give Required Permissions(Commit, Pull, Push, metadata, workspace, ... etc) 
+Click on create app -> Generate a private key 
+To Decode the key we require openssl, if you dont have openssl
+sudo apt install openssl 
+
+Use the command: openssl: 
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in (/path to PEM File) -out converted-github-app.pem -nocrypt
+
+
+Ref for openssl command: 
+https://www.openssl.org/docs/manmaster/man1/openssl-pkcs8.html
+
+Remove docker root permission executions with below commands: 
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl restart docker.service
+
+# VM saved (Jenkins-Docker-Project)
+
+virsh snapshot-revert $vm --snapshotname initial-setup --running (To revert the VM)
+virsh snapshot-create-as $vm --name initial-setup (To save the snapshot)
+
+
+vagrant cloud publish kqmail56/jenkins-docker 1.0.0 libvirt boxes/my/virtualbox.box -d "A really cool box to download and use" --version-description "A cool version" --release --short-description "Download me!"
